@@ -55,3 +55,17 @@ If the resource you want is `New Jersey` and you type: `New Jersey`, `Jersey`, o
 
 
 
+## Experience examples
+
+This example show a basic type-ahaead
+
+https://codepen.io/inimistschool/pen/PvBzYe
+
+They one shows the substring matching feature.
+
+Type: `New Jer`, `Jer`, or `New` then you should get: `New Jersey` in the typeahead results.
+
+https://codepen.io/mcguiretj/pen/QVgmoq
+
+
+
