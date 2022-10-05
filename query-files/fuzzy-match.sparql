@@ -1,0 +1,8 @@
+SELECT  ?person ?property ?textMatch ?score
+WHERE {
+
+    ?person a :Person .
+    ?person ?property ?textMatch .
+    
+    (?textMatch ?score) <tag:stardog:api:property:textMatch> "Sta~".
+} ORDER BY desc(?score)

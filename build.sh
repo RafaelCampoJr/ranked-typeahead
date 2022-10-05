@@ -10,25 +10,22 @@ DBNAME=${1:-rdtd}
 stardog-admin db drop $DBNAME || :
 
 ## Creates a Stardog database
-stardog-admin db create -n $DBNAME
+stardog-admin db create -n $DBNAME -c data/database.properties
 
 ## Imports Namespaces
 stardog namespace import $DBNAME ./data/namespace.ttl
 
 ## Adds the data.
-stardog data add $DBNAME ./data/logical-backup.ttl.gz
+stardog data add $DBNAME ./data/person.ttl
 
 ## Verifies the number of triples in the default graph
-stardog data size --exact router
+stardog data size --exact $DBNAME 
 
-## Runs Spark
-spark-submit --master local[*] --files router.properties stardog-spark-connector-1.0.1.jar router.properties
+## Runs tests before access
+stardog test run ./data/test-before.ttl
 
-## Verifies the number of triples in the default graph
-stardog data size --exact router
+## Logs the access of the resource
+stardog query rdtd query-files/add-timestamp.sparql
 
-## Verifies Output. The Spark Connector output the results that Spark produced into Stardog
-stardog query $DBNAME ./query-files/pageRankRoundedScore.sparql
-
-## Runs all tests
-stardog test run ./data/test.ttl
+## Runs tests after access
+stardog test run ./data/test-after.ttl

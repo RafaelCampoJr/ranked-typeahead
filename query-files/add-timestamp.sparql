@@ -1,0 +1,5 @@
+INSERT {
+    <http://api.stardog.com/person#323> :accessOn ?now .
+} WHERE {
+    BIND (now() As ?now)
+}

@@ -1,16 +1,9 @@
 # The ontology data
-prefix net: <http://stardog.com/network/>
-prefix scope: <http://stardog.com/network/classes/>
+prefix : <http://api.stardog.com/>
 
-net:Router a rdfs:Class ; 
-        rdfs:label "Router" .
+:Person a rdfs:Class ; 
+        rdfs:label "Person" .
 
-scope:Regional rdfs:subClassOf net:Router .
-scope:Local rdfs:subClassOf net:Router .        
+:Customer rdfs:subClassOf :Person .
+:Employee rdfs:subClassOf :Person .        
 
-net:connects a owl:SymmetricProperty ;
-    rdfs:label "connects" ;
-    rdfs:domain net:Router ;
-    rdfs:range net:Router .   
-
-    

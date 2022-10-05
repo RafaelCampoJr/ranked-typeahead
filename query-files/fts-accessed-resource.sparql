@@ -1,0 +1,35 @@
+SELECT DISTINCT ?person ?maxScore ?accessCount (GROUP_CONCAT(?textMatch; SEPARATOR="; ") AS ?textMatches) {
+
+    {
+        SELECT ?person (max(?score) AS ?maxScore) {
+            ?person a :Person .
+            
+            ?person :first|
+                :last|
+                :last_period_space_first|
+                :last_space_first|
+                :first_hyphen_last|
+                :last_comma_space_first|
+                :upper_case__last_comma_space_first|
+                :first_period_last ?textMatch .
+            
+            (?textMatch ?score) <tag:stardog:api:property:textMatch> "Star~" .
+        } GROUP BY ?person
+    }
+
+        ?person :first|
+            :last|
+            :last_period_space_first|
+            :last_space_first|
+            :first_hyphen_last|
+            :last_comma_space_first|
+            :upper_case__last_comma_space_first|
+            :first_period_last ?textMatch .
+    
+    OPTIONAL
+    {
+        SELECT DISTINCT ?person (count(?timestamp) AS ?accessCount){
+            ?person :accessOn ?timestamp .
+        } GROUP BY ?person
+    }
+} GROUP BY ?person ?maxScore ?accessCount ORDER BY DESC(?accessCount)  DESC(?score) 

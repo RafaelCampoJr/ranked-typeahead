@@ -1,0 +1,21 @@
+@prefix test: <tag:stardog:api:test:> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+
+
+
+test:defaults
+    test:server "http://localhost:5820" ;
+    test:database "rdtd" ;
+    test:warmups 2;
+    test:runs 3 .     
+
+
+
+
+##
+test:getsResourceAfterAccessedthreeTimes a test:Test ;
+    test:resultFile "../query-results/fts-accessed-resource.json" ;
+    test:queryFile "../query-files/fts-accessed-resource.sparql" ;
+    test:reasoning "false"^^xsd:boolean .
+
+

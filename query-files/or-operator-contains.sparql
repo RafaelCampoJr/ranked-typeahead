@@ -1,0 +1,16 @@
+## In this query we use the OR Lucene Operator to see if we can increase the number of results
+SELECT *
+WHERE {
+
+    {
+        SELECT * {
+            ?person a :Person .
+            ?person ?property ?textMatch .
+            
+            (?textMatch ?score) <tag:stardog:api:property:textMatch> "Stanaway OR Leandra".
+        }
+    }
+
+    BIND(IF(CONTAINS(LCASE(?textMatch), LCASE("Stanaway. Leandra")), TRUE, FALSE) AS ?contains)
+
+} ORDER BY desc(?score)

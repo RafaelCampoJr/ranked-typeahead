@@ -1,0 +1,37 @@
+
+prefix fts: <tag:stardog:api:search:>
+
+## Here we use a REGEX filter and UNNEST-SPLIT SPARQL pattern to filter out any occurance of special characters from the user
+## We also use the SERVICE form of full-text search. The SERVICE form offers more parameters that can be specified from the SPARQL query
+SELECT * {
+    ?person a :Person .
+    ?person ?property ?match .
+    
+    {
+        select * {
+        {
+            SELECT ?processedInput (GROUP_CONCAT(?inputAsList; SEPARATOR= " OR ") AS ?textMatchInput) {
+                VALUES ?rawInput { "Star" }
+
+                BIND(REPLACE(?rawInput, "[\\s|\\-|\\.]+", " ") AS ?processedInput)
+
+                UNNEST(split(?processedInput, " ") AS ?inputAsList)
+
+            } GROUP BY ?processedInput
+        }
+
+            SERVICE fts:textMatch {
+                [] fts:query ?textMatchInput ;
+                fts:score ?score ;
+                fts:result ?match .
+        
+            }
+        }
+    }
+    
+
+    VALUES ?rawInput { "Star" }
+
+    BIND(LCASE(?match) = LCASE(?rawInput) AS ?exact)
+    BIND(CONTAINS(LCASE(?match), LCASE(?rawInput)) AS ?contains)
+} ORDER BY DESC(?exact) DESC(?exact) DESC(?score)
